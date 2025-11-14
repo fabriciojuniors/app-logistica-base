@@ -1,16 +1,26 @@
-import { StyleSheet, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}>
+        <View style={styles.header}>
+          <View style={styles.iconContainer}>
+            <MaterialIcons
+              name="local-shipping"
+              size={48}
+              color="#FFF" />
+          </View>
+          <Text style={styles.title}>Bem-vindo</Text>
+          <Text style={styles.subtitle}>Acesse sua conta para continuar.</Text>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
