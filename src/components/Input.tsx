@@ -1,13 +1,46 @@
 import {
-    StyleSheet,
-    Text,
-    View
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  View
 } from 'react-native';
 
-export function Input() {
+import { ComponentType } from 'react';
+import { Control, Controller } from 'react-hook-form';
+
+interface InputProps extends TextInputProps {
+  label?: string,
+  nome: string,
+  formControl: Control,
+  icone?: ComponentType
+}
+
+export function Input(props: InputProps) {
   return (
     <View style={styles.container}>
-      <Text>Aqui vai um input</Text>
+      {props.label && <Text style={styles.label}>{props.label}</Text>}
+
+      <Controller
+        name={props.nome}
+        control={props.formControl}
+        render={({ field }) => (
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              {...props}
+            />
+
+            {props.icone &&
+              <View style={styles.iconContainer}>
+                <props.icone />
+              </View>}
+          </View>
+        )}
+      />
     </View>
   );
 }
