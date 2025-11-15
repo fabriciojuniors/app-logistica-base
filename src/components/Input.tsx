@@ -12,8 +12,9 @@ import { Control, Controller } from 'react-hook-form';
 interface InputProps extends TextInputProps {
   label?: string,
   nome: string,
-  formControl: Control,
-  icone?: ComponentType
+  formControl: Control<any>,
+  icone?: ComponentType,
+  erro?: string
 }
 
 export function Input(props: InputProps) {
@@ -41,6 +42,11 @@ export function Input(props: InputProps) {
           </View>
         )}
       />
+      {props.erro &&
+        <Text
+          style={styles.errorText}>
+          {props.erro}
+        </Text>}
     </View>
   );
 }

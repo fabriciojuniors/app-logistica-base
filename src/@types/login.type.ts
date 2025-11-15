@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
     email: z.email("O e-mail informado é inválido!"),
     senha: z.string()
         .min(3, "Deve possuir ao menos 3 caracteres")
