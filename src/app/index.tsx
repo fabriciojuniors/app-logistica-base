@@ -1,10 +1,11 @@
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
 import { Login, loginSchema } from "../@types/login.type";
 import { Input } from "../components/Input";
+import { supabase } from "../lib/supabase";
 
 export default function Index() {
 
@@ -16,10 +17,30 @@ export default function Index() {
     }
   })
 
+  const autenticar = async (loginForm: Login) => {
+    try {
+      const {data, error} = await supabase.auth.signInWithPassword({
+        email: loginForm.email,
+        password: loginForm.senha
+      });
+      
+      if (error) {
+        console.log('Erro ao autenticar!', error);
+        throw error;        
+      }
+
+      if (data && data.session) {
+        // Mover de tela!
+      }
+    } catch(e) {
+      Alert.alert('Atenção!', 'Usuário ou senha inválidos!')
+    }    
+  }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={'padding'}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
@@ -39,6 +60,8 @@ export default function Index() {
             formControl={control}
             label="E-mail"
             placeholder="exemplo@email.com"
+            keyboardType="email-address"
+            erro={errors.email?.message}
             icone={() =>
               <MaterialIcons
                 name="person-outline"
@@ -46,6 +69,23 @@ export default function Index() {
                 color={"#666"}
               />}
           />
+          <Input
+            nome="senha"
+            formControl={control}
+            label="Senha"
+            secureTextEntry
+            erro={errors.senha?.message}
+            icone={() =>
+              <MaterialIcons
+                name="lock-outline"
+                size={20}
+                color={"#666"}
+              />}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleSubmit(autenticar)}>
+            <Text style={styles.buttonText}>Entrar</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
