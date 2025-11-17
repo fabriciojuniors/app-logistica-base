@@ -2,6 +2,7 @@ import { Alert, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpa
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { router } from "expo-router";
 import { useForm } from "react-hook-form";
 import { Login, loginSchema } from "../@types/login.type";
 import { Input } from "../components/Input";
@@ -30,7 +31,7 @@ export default function Index() {
       }
 
       if (data && data.session) {
-        // Mover de tela!
+        router.replace('/(tabs)/configuracoes');
       }
     } catch(e) {
       Alert.alert('Atenção!', 'Usuário ou senha inválidos!')
