@@ -1,3 +1,4 @@
+import { supabase } from "@/src/lib/supabase";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
@@ -18,7 +19,8 @@ export default function Configuracoes() {
     const [user, setUser] = useState<UserInfo | null>(null);
 
     const handleSignOut = async () => {
-        
+        console.log('Deslogando...');        
+        await supabase.auth.signOut()
     };
 
     const avatarSource = user?.avatarUrl
