@@ -1,5 +1,6 @@
 import { PedidoListItem } from "@/src/@types/PedidoListItem.type";
 import Pedido from "@/src/components/Pedido";
+import { supabase } from "@/src/lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useCallback, useMemo } from "react";
@@ -17,7 +18,25 @@ export default function Pedidos() {
     const PAGE_SIZE = 5;
 
     const fetchPage = async ({ pageParam = 0 }: { pageParam?: number }) => {
-        return [] as PedidoListItem[]
+        try {
+            const { data: { user }, error } = await supabase.auth.getUser();
+
+            if (error) {
+                throw error
+            }
+
+            const { data: pedidos } = await supabase
+                .from('pedidos')
+                .select('id, data, localizacao, status, itens_pedido(quantidade)')
+                .or(`status.eq.pendente, and(status.eq.em_entrega, entregador_id.eq.${user?.id})`)
+                .range(pageParam, pageParam + PAGE_SIZE)
+                .overrideTypes<PedidoListItem[]>()
+
+            return pedidos ?? []
+        } catch (e) {
+            console.log(e);
+            return []
+        }
     }
 
     const {

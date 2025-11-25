@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, router } from "expo-router";
 import { useEffect } from "react";
 import { AppState } from "react-native";
@@ -10,6 +11,8 @@ AppState.addEventListener('change', async (state) => {
     await supabase.auth.stopAutoRefresh()
   }
 })
+
+const queryClient = new QueryClient()
 
 export default function RootLayout() {
 
@@ -25,18 +28,22 @@ export default function RootLayout() {
     return data.subscription?.unsubscribe
   }, [])
 
-  return <Stack>
-    <Stack.Screen
-      name="index"
-      options={{
-        headerShown: false
-      }}
-    />
-    <Stack.Screen
-      name="(tabs)"
-      options={{
-        headerShown: false
-      }}
-    />
-  </Stack>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false
+          }}
+        />
+      </Stack>
+    </QueryClientProvider>
+  );
 }

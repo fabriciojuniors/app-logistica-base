@@ -5,16 +5,26 @@ import { View } from "react-native";
 export default function Layout() {
   return <Tabs>
     <Tabs.Screen
-            name="configuracoes"
-            options={{
-                title: 'Configurações',
-                tabBarLabel: 'Configurações',
-                headerTitleAlign: 'center',
-                headerBackground: () => (<View style={{ flex: 1, backgroundColor: '#f6f7f8' }} />),
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialIcons name="settings" size={size} color={color} />
-                ),
-            }}
-        />
+      name="pedidos"
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Pedidos',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialIcons name="local-shipping" size={size} color={color} />
+        ),
+      }}
+    />
+    <Tabs.Screen
+      name="configuracoes"
+      options={{
+        title: 'Configurações',
+        tabBarLabel: 'Configurações',
+        headerTitleAlign: 'center',
+        headerBackground: () => (<View style={{ flex: 1, backgroundColor: '#f6f7f8' }} />),
+        tabBarIcon: ({ color, size }) => (
+          <MaterialIcons name="settings" size={size} color={color} />
+        ),
+      }}
+    />
   </Tabs>;
 }

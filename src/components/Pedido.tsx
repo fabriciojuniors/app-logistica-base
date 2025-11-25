@@ -12,7 +12,7 @@ export default function Pedido({ item }: { item: PedidoListItem }) {
     );
 
     const iniciarEntregar = () => {
-        //router.push(`/(tabs)/pedidos/entrega/${item.id}`);
+        router.push(`/(tabs)/pedidos/${item.id}/entrega`);
     }
 
     return (
