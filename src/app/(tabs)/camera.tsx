@@ -1,4 +1,5 @@
 import { CameraCapturedPicture, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
+import { createAssetAsync, usePermissions } from 'expo-media-library';
 import { useRef, useState } from 'react';
 import { Button, Image, Text, View } from 'react-native';
 
@@ -6,6 +7,8 @@ export default function Camera() {
     const [facing, setFacing] = useState<CameraType>('back')
     const [permission, requestPermission] = useCameraPermissions();
     const [ultimaFoto, setUltimaFoto] = useState<CameraCapturedPicture | null>(null)
+
+    const [permissionGaleria, requestPermissionGaleria] = usePermissions()
 
     const cameraRef = useRef<CameraView | null>(null);
 
@@ -33,8 +36,21 @@ export default function Camera() {
 
             if (foto) {
                 setUltimaFoto(foto);
+                await salvarFoto(foto);
             }
         }
+    }
+
+    const salvarFoto = async (foto: CameraCapturedPicture) => {
+        if (!permissionGaleria || !permissionGaleria.granted) {
+            const response = await requestPermissionGaleria()
+            
+            if (!response.granted) {
+                return;
+            }
+        }
+
+        await createAssetAsync(foto.uri);
     }
 
     return (
